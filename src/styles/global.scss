@@ -1,0 +1,16 @@
+@use './theme.scss' as *;
+
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 16px;
+}

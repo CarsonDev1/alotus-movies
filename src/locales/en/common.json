@@ -1,0 +1,13 @@
+{
+	"appTitle": "Movies App",
+	"theme": "Theme",
+	"theme_auto": "Auto",
+	"theme_light": "Light",
+	"theme_dark": "Dark",
+	"language": "Language",
+	"lang_en": "English",
+	"lang_vi": "Vietnamese",
+	"header_now_playing": "Now Playing",
+	"header_top_rated": "Top Rated",
+	"search_placeholder": "Search movies..."
+}

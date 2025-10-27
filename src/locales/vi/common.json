@@ -1,0 +1,13 @@
+{
+	"appTitle": "Ứng dụng Phim",
+	"theme": "Giao diện",
+	"theme_auto": "Tự động",
+	"theme_light": "Sáng",
+	"theme_dark": "Tối",
+	"language": "Ngôn ngữ",
+	"lang_en": "Tiếng Anh",
+	"lang_vi": "Tiếng Việt",
+	"header_now_playing": "Đang chiếu",
+	"header_top_rated": "Xếp hạng cao",
+	"search_placeholder": "Tìm kiếm phim..."
+}
