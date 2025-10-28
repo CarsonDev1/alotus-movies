@@ -8,7 +8,7 @@
 
 body {
 	margin: 0;
-	font-family: system-ui, sans-serif;
+	font-family: 'Poppins', sans-serif;
 	background: var(--bg);
 	color: var(--text);
 }
@@ -16,7 +16,7 @@ body {
 .container {
 	max-width: 1440px;
 	margin: 0 auto;
-	padding: 16px;
+	padding: 0 16px;
 
 	@include respond-to(laptop) {
 		max-width: 900px;
@@ -31,4 +31,25 @@ body {
 		max-width: 95%;
 		padding: 8px;
 	}
+}
+
+.sec-com {
+	padding: 30px 0;
+
+	@include respond-to(tablet) {
+		padding: 20px 0;
+	}
+
+	@include respond-to(mobile) {
+		padding: 10px 0;
+	}
+}
+
+.fade-img {
+	opacity: 0;
+	transition: opacity 0.4s ease;
+}
+
+.fade-img.loaded {
+	opacity: 1;
 }

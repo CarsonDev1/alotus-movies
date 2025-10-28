@@ -1,0 +1,70 @@
+.lang-select {
+	position: relative;
+}
+
+.lang-select.dark .lang-btn {
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+}
+.lang-select.dark .lang-btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+.lang-select.dark .lang-menu {
+	background: #1c1c1c;
+}
+.lang-select.dark .lang-menu button {
+	color: #fff;
+}
+.lang-select.dark .lang-menu button:hover {
+	background: rgba(255, 255, 255, 0.12);
+}
+
+.lang-select.light .lang-btn {
+	background: rgba(0, 0, 0, 0.1);
+	color: #111;
+}
+.lang-select.light .lang-btn:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
+.lang-select.light .lang-menu {
+	background: #fff;
+	border: 1px solid #ddd;
+}
+.lang-select.light .lang-menu button {
+	color: #111;
+}
+.lang-select.light .lang-menu button:hover {
+	background: rgba(0, 0, 0, 0.08);
+}
+
+.lang-btn {
+	border: none;
+	padding: 6px 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: 0.25s;
+}
+
+.lang-menu {
+	position: absolute;
+	right: 0;
+	margin-top: 6px;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+	display: flex;
+	flex-direction: column;
+	min-width: 130px;
+	z-index: 20;
+}
+
+.lang-menu button {
+	padding: 10px 12px;
+	background: none;
+	border: none;
+	text-align: left;
+	font-size: 14px;
+	cursor: pointer;
+	transition: 0.2s;
+}

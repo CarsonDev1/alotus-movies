@@ -9,5 +9,13 @@
 	"lang_vi": "Tiếng Việt",
 	"header_now_playing": "Đang chiếu",
 	"header_top_rated": "Xếp hạng cao",
-	"search_placeholder": "Tìm kiếm phim..."
+	"search_placeholder": "Tìm kiếm phim...",
+	"nav_home": "Trang chủ",
+	"nav_my_list": "Danh sách của tôi",
+	"watch_trailer": "Xem Trailer",
+	"director": "Đạo diễn",
+	"directors": "Đạo diễn",
+	"cast": "Diễn viên",
+	"runtime": "phút",
+	"release_year": "Năm phát hành"
 }

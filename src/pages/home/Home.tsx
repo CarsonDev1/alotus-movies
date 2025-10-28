@@ -1,12 +1,26 @@
+import { useSearchParams } from 'react-router-dom';
+import NowPlayingGrid from '../movies/NowPlayingGrid';
+import TopRatedGrid from '../movies/TopRatedGrid';
 import Banner from '../../components/Banner/Banner';
-import './Home.scss';
+import Tabs from '../../components/Tabs/Tabs';
+import ViewToggle from '../../components/ViewToggle/ViewToggle';
 
-const Home = () => {
+export default function Home() {
+	const [params] = useSearchParams();
+	const tab = params.get('tab') ?? 'now';
+
 	return (
-		<section>
+		<div>
 			<Banner />
-		</section>
+			<div className='container'>
+				<div className='sec-com'>
+					<Tabs />
+				</div>
+				<div className='toggle-wrap'>
+					<ViewToggle />
+				</div>
+				{tab === 'top' ? <TopRatedGrid /> : <NowPlayingGrid />}
+			</div>
+		</div>
 	);
-};
-
-export default Home;
+}

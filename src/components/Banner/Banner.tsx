@@ -1,125 +1,176 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getNowPlaying } from '../../api/tmdbApi';
 import type { Movie } from '../../types/movie';
 import type { PaginatedResponse } from '../../types/api';
+import useMyList from '../../hooks/useMyList';
 import './Banner.scss';
 
 export default function Banner() {
+	const navigate = useNavigate();
+	const { toggle, has } = useMyList();
 	const { data, isLoading } = useQuery<PaginatedResponse<Movie>>({
 		queryKey: ['banner-now-playing'],
 		queryFn: () => getNowPlaying(1),
 	});
 
-	const [slides, setSlides] = useState<Movie[]>([]);
-	const [animationType, setAnimationType] = useState<'next' | 'prev' | ''>('');
+	const [activeIndex, setActiveIndex] = useState(0);
 	const [isAnimating, setIsAnimating] = useState(false);
-	const autoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const autoTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-	const TIME_RUNNING = 3000;
-	const TIME_AUTO_NEXT = 7000;
+	const TIME_RUNNING = 500;
+	const TIME_AUTO_NEXT = 8000;
 
-	// Cập nhật slides khi có data TMDB
-	useEffect(() => {
-		if (data?.results) {
-			setSlides(data.results.slice(0, 4)); // lấy 4 phim đầu tiên
-		}
-	}, [data]);
+	const totalSlides = data?.results?.slice(0, 5) || [];
+	const slides =
+		totalSlides.length > 0 ? [...totalSlides.slice(activeIndex), ...totalSlides.slice(0, activeIndex)] : [];
 
-	const showSlider = useCallback(
-		(type: 'next' | 'prev') => {
-			if (isAnimating || slides.length === 0) return;
+	const changeSlide = useCallback(
+		(targetIndex: number) => {
+			if (isAnimating || totalSlides.length === 0 || targetIndex === 0) return;
 
 			setIsAnimating(true);
-			setAnimationType(type);
+			setActiveIndex((prev) => (prev + targetIndex) % totalSlides.length);
 
-			setSlides((prev) => {
-				if (type === 'next') {
-					const [first, ...rest] = prev;
-					return [...rest, first];
-				} else {
-					const newSlides = [...prev];
-					const last = newSlides.pop();
-					return last ? [last, ...newSlides] : newSlides;
-				}
-			});
-
-			setTimeout(() => {
-				setAnimationType('');
-				setIsAnimating(false);
-			}, TIME_RUNNING);
+			setTimeout(() => setIsAnimating(false), TIME_RUNNING);
 		},
-		[isAnimating, slides.length]
+		[isAnimating, totalSlides.length]
 	);
 
-	const handleNext = useCallback(() => showSlider('next'), [showSlider]);
-	const handlePrev = useCallback(() => showSlider('prev'), [showSlider]);
+	const handleViewDetails = (movieId: number) => {
+		navigate(`/movie/${movieId}`);
+	};
 
-	// Auto play
+	const handleToggleFavorite = (e: React.MouseEvent, movie: Movie) => {
+		e.stopPropagation();
+		toggle(movie);
+	};
+
 	useEffect(() => {
-		if (autoTimer.current) clearTimeout(autoTimer.current);
-		autoTimer.current = setTimeout(() => {
-			handleNext();
-		}, TIME_AUTO_NEXT);
+		if (totalSlides.length === 0) return;
+
+		autoTimerRef.current = setTimeout(() => changeSlide(1), TIME_AUTO_NEXT);
 
 		return () => {
-			if (autoTimer.current) clearTimeout(autoTimer.current);
+			if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
 		};
-	}, [slides, handleNext]);
+	}, [activeIndex, changeSlide, totalSlides.length]);
 
-	if (isLoading) return <div className='carousel loading'>Loading...</div>;
+	if (isLoading) {
+		return (
+			<div className='carousel skeleton'>
+				<div className='list'>
+					<div className='item'>
+						<div className='skeleton-image' />
+						<div className='banner-overlay' />
+						<div className='content'>
+							<div className='skeleton-title' />
+							<div className='skeleton-topic' />
+							<div className='skeleton-des' />
+							<div className='skeleton-buttons'>
+								<div className='skeleton-button' />
+								<div className='skeleton-button' />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className='thumbnail'>
+					{[...Array(5)].map((_, i) => (
+						<div key={i} className='item'>
+							<div className='skeleton-thumb' />
+						</div>
+					))}
+				</div>
+			</div>
+		);
+	}
+
 	if (!slides.length) return null;
 
+	const activeMovie = slides[0];
+	const isInList = has(activeMovie.id);
+
 	return (
-		<div className={`carousel ${animationType}`}>
-			{/* Main slides */}
+		<div className={`carousel ${isAnimating ? 'next' : ''}`}>
 			<div className='list'>
-				{slides.map((movie) => (
+				{slides.map((movie, index) => (
 					<div key={movie.id} className='item'>
 						<img
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.title}
 							loading='lazy'
 						/>
-						<div className='content'>
-							<div className='author'>TMDB</div>
-							<div className='title'>{movie.title}</div>
-							<div className='topic'>⭐ {movie.vote_average.toFixed(1)}</div>
-							<div className='des'>{movie.overview}</div>
-							<div className='buttons'>
-								<button>SEE MORE</button>
-								<button>WATCH NOW</button>
-							</div>
-						</div>
+						{index === 0 && (
+							<>
+								<div className='banner-overlay' />
+								<div className='content'>
+									<div className='title'>{movie.title}</div>
+									<div className='topic'>⭐ {movie.vote_average.toFixed(1)}</div>
+									<div className='des'>{movie.overview}</div>
+									<div className='buttons'>
+										<button className='btn-play' onClick={() => handleViewDetails(movie.id)}>
+											<svg width='24' height='24' viewBox='0 0 24 24' fill='currentColor'>
+												<path d='M8 5v14l11-7z' />
+											</svg>
+											<span>Play</span>
+										</button>
+										<button
+											className={`btn-favorite ${isInList ? 'active' : ''}`}
+											onClick={(e) => handleToggleFavorite(e, movie)}
+											data-tooltip={isInList ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
+										>
+											{isInList ? (
+												<svg
+													width='20'
+													height='20'
+													viewBox='0 0 24 24'
+													fill='none'
+													stroke='currentColor'
+												>
+													<path
+														strokeLinecap='round'
+														strokeLinejoin='round'
+														strokeWidth='2'
+														d='M5 13l4 4L19 7'
+													/>
+												</svg>
+											) : (
+												<svg
+													width='20'
+													height='20'
+													viewBox='0 0 24 24'
+													fill='none'
+													stroke='currentColor'
+												>
+													<path
+														strokeLinecap='round'
+														strokeLinejoin='round'
+														strokeWidth='2'
+														d='M12 5v14m7-7H5'
+													/>
+												</svg>
+											)}
+										</button>
+									</div>
+								</div>
+							</>
+						)}
 					</div>
 				))}
 			</div>
 
-			{/* Thumbnails */}
 			<div className='thumbnail'>
-				{slides.map((movie) => (
-					<div key={`thumb-${movie.id}`} className='item'>
+				{slides.map((movie, index) => (
+					<div
+						key={`thumb-${movie.id}`}
+						className={`item ${index === 0 ? 'active' : ''}`}
+						onClick={() => changeSlide(index)}
+					>
 						<img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} />
-						<div className='content'>
-							<div className='title'>{movie.title}</div>
-							<div className='description'>{movie.release_date}</div>
-						</div>
 					</div>
 				))}
 			</div>
-
-			{/* Controls */}
-			<div className='arrows'>
-				<button id='prev' onClick={handlePrev} disabled={isAnimating}>
-					&lt;
-				</button>
-				<button id='next' onClick={handleNext} disabled={isAnimating}>
-					&gt;
-				</button>
-			</div>
-
-			{/* Time bar */}
-			<div className='time' />
 		</div>
 	);
 }

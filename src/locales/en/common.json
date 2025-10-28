@@ -9,5 +9,13 @@
 	"lang_vi": "Vietnamese",
 	"header_now_playing": "Now Playing",
 	"header_top_rated": "Top Rated",
-	"search_placeholder": "Search movies..."
+	"search_placeholder": "Search movies...",
+	"nav_home": "Home",
+	"nav_my_list": "My List",
+	"watch_trailer": "Watch Trailer",
+	"director": "Director",
+	"directors": "Directors",
+	"cast": "Cast",
+	"runtime": "min",
+	"release_year": "Release Year"
 }
