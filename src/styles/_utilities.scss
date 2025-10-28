@@ -1,0 +1,63 @@
+@use 'mixins' as *;
+
+.skeleton {
+	@include skeleton-gradient;
+	border-radius: 8px;
+}
+
+.fade-in-up {
+	animation: fadeInUp 0.6s ease both;
+}
+
+.text-ellipsis-1 {
+	@include text-ellipsis(1);
+}
+
+.text-ellipsis-2 {
+	@include text-ellipsis(2);
+}
+
+.text-ellipsis-3 {
+	@include text-ellipsis(3);
+}
+
+.glass-light {
+	@include glass-effect(10px, 0.1);
+}
+
+.glass-dark {
+	@include glass-effect(10px, 0.05);
+}
+
+.center-absolute {
+	@include absolute-center;
+}
+
+.grid-responsive {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 8px;
+
+	@media (min-width: 1400px) {
+		grid-template-columns: repeat(6, 1fr);
+		gap: 10px;
+	}
+
+	@media (min-width: 1100px) and (max-width: 1399px) {
+		grid-template-columns: repeat(5, 1fr);
+	}
+
+	@media (min-width: 800px) and (max-width: 1099px) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@media (min-width: 600px) and (max-width: 799px) {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 6px;
+	}
+
+	@media (max-width: 599px) {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 4px;
+	}
+}

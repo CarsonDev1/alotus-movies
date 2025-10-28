@@ -1,20 +1,7 @@
+@use '../../styles/utilities' as *;
+
 .skeleton-card {
+	@extend .skeleton;
 	width: 100%;
 	aspect-ratio: 2 / 3;
-	border-radius: 8px;
-	background: linear-gradient(140deg, var(--card), var(--card), var(--border));
-	background-size: 400% 400%;
-	animation: skeleton-loading 1.4s ease infinite;
-}
-
-@keyframes skeleton-loading {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
 }

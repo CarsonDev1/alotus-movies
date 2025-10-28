@@ -1,15 +1,15 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router';
-// import { lazy } from 'react';
+import { lazy } from 'react';
 
 import { Loadable } from '../../../components/Loadable/Loadable';
 import { Button } from '../../../components/Button/Button';
 import './RootErrorBoundary.scss';
 
 const app = {
-	// 401: lazy(() => import('../401')),
-	// 404: lazy(() => import('../404')),
-	// 429: lazy(() => import('../429')),
-	// 500: lazy(() => import('../500')),
+	401: lazy(() => import('../401')),
+	404: lazy(() => import('../404')),
+	429: lazy(() => import('../429')),
+	500: lazy(() => import('../500')),
 };
 
 function RootErrorBoundary() {
