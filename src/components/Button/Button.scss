@@ -1,0 +1,51 @@
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	border-radius: 6px;
+	cursor: pointer;
+	border: none;
+	transition: all 0.2s ease;
+	font-size: 0.95rem;
+	padding: 0.6rem 1.2rem;
+	user-select: none;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	&--filled {
+		background-color: var(--btn-color, #007bff);
+		color: #fff;
+		border: 1px solid var(--btn-color, #007bff);
+
+		&:hover:not(:disabled) {
+			background-color: color-mix(in srgb, var(--btn-color) 90%, black);
+		}
+
+		&:active:not(:disabled) {
+			background-color: color-mix(in srgb, var(--btn-color) 80%, black);
+		}
+	}
+
+	&--outlined {
+		background: transparent;
+		color: var(--btn-color, #007bff);
+		border: 1px solid var(--btn-color, #007bff);
+
+		&:hover:not(:disabled) {
+			background-color: color-mix(in srgb, var(--btn-color) 10%, white);
+		}
+
+		&:active:not(:disabled) {
+			background-color: color-mix(in srgb, var(--btn-color) 20%, white);
+		}
+	}
+
+	&--icon {
+		padding: 0.5rem;
+		border-radius: 50%;
+	}
+}

@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ThemeContext, type ThemeMode } from './theme-context';
+import { ThemeContext } from './theme-context';
+import { ThemeMode } from '../constants/enums';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-	const [mode, setMode] = useState<ThemeMode>(() => {
-		return (localStorage.getItem('theme-mode') as ThemeMode) || 'auto';
-	});
+	const [mode, setMode] = useState<ThemeMode>(
+		() => (localStorage.getItem('theme-mode') as ThemeMode) || ThemeMode.Auto
+	);
 
 	useEffect(() => {
 		localStorage.setItem('theme-mode', mode);
-
 		const root = document.documentElement;
-		if (mode === 'auto') {
+		if (mode === ThemeMode.Auto) {
 			root.removeAttribute('data-theme');
 		} else {
 			root.setAttribute('data-theme', mode);

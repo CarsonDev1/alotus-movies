@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanem/react-nprogress": "^5.0.56",
     "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-query-devtools": "^5.90.2",
     "axios": "^1.12.2",
@@ -17,7 +18,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^16.2.0",
-    "react-router-dom": "^6.30.1",
+    "react-router-dom": "^7.9.4",
     "sass": "^1.93.2"
   },
   "devDependencies": {

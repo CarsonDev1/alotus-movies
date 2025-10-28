@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../theme';
+import { Language, ThemeMode } from '../../constants/enums';
 import './Header.scss';
 
 export default function Header() {
 	const { t, i18n } = useTranslation('common');
 	const { mode, setMode } = useTheme();
+	const currentLang = i18n.language || Language.EN;
 
-	const currentLang = i18n.language || 'en';
-
-	const changeLang = (lng: 'en' | 'vi') => {
+	const changeLang = (lng: Language) => {
 		localStorage.setItem('lang', lng);
 		i18n.changeLanguage(lng);
 	};
@@ -21,10 +21,10 @@ export default function Header() {
 				<div className='controls'>
 					<label>
 						{t('theme')}:
-						<select className='select' value={mode} onChange={(e) => setMode(e.target.value as never)}>
-							<option value='auto'>{t('theme_auto')}</option>
-							<option value='light'>{t('theme_light')}</option>
-							<option value='dark'>{t('theme_dark')}</option>
+						<select className='select' value={mode} onChange={(e) => setMode(e.target.value as ThemeMode)}>
+							<option value={ThemeMode.Auto}>{t('theme_auto')}</option>
+							<option value={ThemeMode.Light}>{t('theme_light')}</option>
+							<option value={ThemeMode.Dark}>{t('theme_dark')}</option>
 						</select>
 					</label>
 
@@ -32,11 +32,11 @@ export default function Header() {
 						{t('language')}:
 						<select
 							className='select'
-							value={currentLang.startsWith('vi') ? 'vi' : 'en'}
-							onChange={(e) => changeLang(e.target.value as 'en' | 'vi')}
+							value={currentLang.startsWith(Language.VI) ? Language.VI : Language.EN}
+							onChange={(e) => changeLang(e.target.value as Language)}
 						>
-							<option value='en'>{t('lang_en')}</option>
-							<option value='vi'>{t('lang_vi')}</option>
+							<option value={Language.EN}>{t('lang_en')}</option>
+							<option value={Language.VI}>{t('lang_vi')}</option>
 						</select>
 					</label>
 				</div>
